@@ -60,6 +60,9 @@
     .card-img-top{
      height:10% ;
     }
+    .btn{
+        border-radius: 2rem;
+    }
  }
 
 
