@@ -1,30 +1,57 @@
-import React from 'react';
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import './App.css';
-import {NavLink, Switch,Route, Redirect} from 'react-router-dom';
-import Pro from "./Pro";
+import React, { useState,useEffect } from 'react';
 
 
 function App() {
-  const img="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg";
+  const [country,setcountry]=useState([]);
+
+  useEffect(() => {
+    const fetchApi = async () => {
+        const url = `https://disease.sh/v3/covid-19/countries`;
+        const response = await fetch(url)
+        const resJson = await response.json();
+        setcountry(resJson);
+        console.log(resJson)
+    }
+    fetchApi();
+}, [])
   return (
   <>
-  <div className="sel justify-content-center">
-  <div className="card col-md-6" >
-    <img src={img} className="card-img-top" alt={img}/>
-    <div className="card-body">
-    <h5 className="card-title">My Profile</h5>
-    <p className="card-text">{<Switch>
-      <Route exact path='/Pro' component={Pro}/>
-      <Redirect to="/"/>
+  <div>
+  <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Country</th>
+      <th scope="col">Active Case</th>
+      <th scope="col">Deaths Case</th>
+      <th scope="col">Recovered Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row"> <ol>
+     {country.map(item=>
+     <li>{item.country }</li>
+      )}
+    </ol></th>
+      <td> {country.map(item=>
+     <li>{item.active }</li>
+      )}</td>
+      <td> {country.map(item=>
+     <li>{item.deaths}</li>
+      )}</td>
+      <td>  {country.map(item=>
+     <li>{item.recovered }</li>
+      )}</td>
+    </tr>
+  </tbody>
+</table>
 
-    </Switch>}</p>
-    <NavLink to="/pro" className="btn btn-primary">View Profile</NavLink>
-    </div>
+   
   </div>
-  </div>
+
     </>
   );
 }
 
 export default App;
+
